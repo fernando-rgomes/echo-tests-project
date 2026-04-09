@@ -1,0 +1,26 @@
+{
+  "name": "echo-tests-project",
+  "version": "1.0.0",
+  "description": "Este repositório centraliza a **estratégia de testes automatizados** aplicada ao sistema **Echo**, com foco na validação de comportamento, regras de negócio e fluxos críticos da aplicação.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernando-rgomes/echo-tests-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fernando-rgomes/echo-tests-project/issues"
+  },
+  "homepage": "https://github.com/fernando-rgomes/echo-tests-project#readme",
+  "devDependencies": {
+    "cypress": "^15.13.1"
+  }
+}
