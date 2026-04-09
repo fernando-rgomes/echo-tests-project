@@ -1,87 +1,80 @@
-# 📋 Plano de Testes - Projeto Echo
+# 📋 Plano de Testes - Projeto ECHO
 
-## 🎯 Objetivo
+Este documento serve como o guia mestre de qualidade para a plataforma **Echo (Ouvidoria Anônima)**, detalhando as estratégias, ferramentas e heurísticas utilizadas para garantir um software seguro e resiliente.
 
-Definir a estratégia de testes para validar a qualidade do sistema Echo, garantindo que as principais funcionalidades estejam corretas, seguras e consistentes.
+---
+###  Repositórios do Projeto
+Para consultar a implementação dos testes e o código-fonte da aplicação, acesse os links abaixo:
+
+* ⚙️ **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](link-do-seu-repo-backend)
+* 💻 **Repositório Frontend (Cypress E2E & UI):** [Clique aqui para acessar o GitHub](link-do-seu-repo-frontend-ou-cypress)
 
 ---
 
-## 🧠 Escopo
+### 🎯 1. Objetivo e Política de Qualidade
+Garantir a integridade, o anonimato e a segurança do sistema através de uma abordagem de **Pirâmide de Testes**. O foco principal é a proteção de dados sensíveis e a garantia de que as regras de negócio (RBAC) sejam invioláveis, tanto na camada de serviço (API) quanto na jornada do usuário (Web).
 
-Serão testadas as seguintes funcionalidades:
+## 🧠 2. Escopo e Matriz de Rastreabilidade
+Para garantir que nenhum requisito fique sem cobertura, utilizamos prefixos de identificação que conectam o código ao plano:
 
-- Cadastro de usuário
-- Listagem de usuários
-- Validação de formulário
-- Comportamento da aplicação em cenários de erro
+* **`USER-XXX`**: Cadastro e Integridade de Usuário (API).
+* **`AUTH-XXX`**: Segurança, JWT e Autenticação (API).
+* **`RBAC-XXX`**: Controle de Acesso Baseado em Perfis (API).
+* **`REPORT-XXX`**: Ciclo de vida da denúncia e persistência (API).
+* **`E2E-XXX`**: Jornada visual e comportamento funcional no navegador (Cypress).
 
----
+## 🛠️ 3. Estratégia de Testes
 
-## 🧪 Tipos de Teste
+### 🔸 Camada de Integração (API Backend)
+* **Ferramentas:** JUnit 5, Rest Assured, AssertJ.
+* **Foco:** Contratos JSON, Lógica de Negócio, Status Codes e Segurança.
+* **Técnica:** Testes de estado e comportamento, garantindo que a API responda corretamente a entradas válidas e trate exceções de forma segura (sem vazar stacktraces).
 
-### 🔸 Testes de API
-Realizados na API desenvolvida em Spring Boot.
+### 🛡️ Evidência de Testes de Integração (Backend)
+Abaixo, o log de execução da suíte de segurança, validando o bloqueio de acessos não autorizados e a integridade do RBAC (Role-Based Access Control).
 
-Objetivos:
-- Validar regras de negócio
-- Garantir uso correto de status HTTP
-- Verificar tratamento de erros
+![Sucesso nos Testes de API](./api-evidence/api-integration-security-success.png)
 
-Ferramenta:
-- Rest Assured
+> **Nota:** Todos os 17 cenários de integração foram validados com 100% de sucesso, cobrindo fluxos de Autenticação, Cadastro e Gestão de Denúncias.
 
----
-
-### 🔸 Testes End-to-End (E2E)
-Realizados na aplicação web com Thymeleaf.
-
-Objetivos:
-- Validar fluxo do usuário
-- Garantir integração entre interface e backend
-- Testar comportamento visual e interações
-
-Ferramenta:
-- Cypress
+### 🔸 Camada End-to-End (Web Frontend)
+* **Ferramentas:** Cypress.
+* **Foco:** Usabilidade, navegação entre rotas, feedback visual (alertas/toasts) e persistência visual dos dados.
+* **Diferencial:** Automação de fluxos complexos, como a captura dinâmica de protocolos para consulta de status.
 
 ---
 
-## ⚠️ Riscos Identificados
+## 🚀 4. Execução dos Testes (Guia do Avaliador)
 
-- Falha na validação de entrada de dados
-- Inconsistência na persistência de dados
-- Falhas na exibição de informações na interface
-- Submissão de formulários com dados inválidos
+Para reproduzir os resultados de qualidade, utilize os comandos abaixo:
 
----
+### **Backend (API)**
+```bash
+# Executa todos os testes de integração e gera relatório de cobertura
+./mvnw test
 
-## 🧩 Estratégia
+# Abre a interface do Cypress para execução assistida
+npx cypress open
 
-Os testes foram organizados em dois níveis:
+# Executa os testes em modo headless (terminal)
+npx cypress run
+```
+## ✅ 5. Critérios de Aceitação (Definition of Done)
+Um caso de teste só é considerado concluído quando:
+1. O código do teste segue os padrões de *Clean Code* e está documentado.
+2. O teste passa de forma consistente em ambiente local (sem *flakiness*).
+3. Qualquer bug identificado durante o teste foi registrado no [Relatório de Defeitos](./BUG-REPORTS.md).
+4. A cobertura de código atende aos requisitos mínimos de segurança e negócio.
 
-1. API → valida lógica e regras
-2. E2E → valida comportamento do usuário
+## ⚠️ 6. Riscos, Mitigações e Lições Aprendidas
 
-Essa abordagem permite detectar falhas em diferentes camadas do sistema.
+| Risco Identificado | Ação Mitigadora Implementada |
+| :--- | :--- |
+| **Bypass de Segurança (RBAC)** | Implementação de testes negativos específicos para cada Role (`ADMIN` vs `USER`). |
+| **Mascaramento de Erros** | Padronização do `GlobalExceptionHandler` para retornar erros granulares (400 vs 403). |
+| **Sincronia em Testes E2E** | Uso de *Aliases* e *Promises* no Cypress para lidar com a natureza assíncrona da Web. |
+| **Exceções de JS no Front** | Implementação de *Guard Clauses* no JavaScript para evitar quebra de scripts em páginas dinâmicas. |
 
----
-
-## 🚀 Critérios de Sucesso
-
-- Todos os testes automatizados executando com sucesso
-- Nenhum erro crítico nas funcionalidades principais
-- Respostas da API com status codes corretos
-
-
-# 🧪 Cobertura de Testes Automatizados
-
-A garantia de qualidade desta API foi construída utilizando **JUnit 5** e **Rest Assured**, garantindo que as regras de negócio de anonimato e validação funcionem perfeitamente. Os testes rodam de forma isolada utilizando um banco de dados **H2 em memória**.
-
-## 📍 Endpoint: `/users` (Cadastro de Denunciante)
-
-| Cenário de Teste | Tipo de Teste | Dados de Entrada | Resultado Esperado | Status HTTP | Status |
-| :--- | :--- | :--- | :--- | :--- | :---: |
-| **Deve cadastrar usuário válido** | Integração (API) | E-mail válido e senha preenchida | Usuário criado. Retorna UUID, email e role. Omite a senha. | `201 Created` | ✅ |
-| **Erro: Senha em branco** | Integração (API) | E-mail válido e senha vazia | Bloqueia requisição. Retorna erro no campo "senha". | `400 Bad Request` | ✅ |
-| **Erro: E-mail inválido** | Integração (API) | E-mail sem formato e senha preenchida | Bloqueia requisição. Retorna erro no campo "email". | `400 Bad Request` | ⏳ Todo |
-| **Erro: Todos os campos vazios** | Integração (API) | E-mail vazio e senha vazia | Retorna lista de erros apontando falha em ambos os campos. | `400 Bad Request` | ⏳ Todo |
-| **Erro: E-mail duplicado** | Integração (API) | E-mail já existente no sistema | Bloqueia requisição informando conflito de dados. | `409 Conflict` | ⏳ Todo |
+## 📊 7. Documentação de Suporte
+* [**Casos de Teste Detalhados**](./TEST-CASES.md): Lista completa de cenários e resultados esperados.
+* [**Relatório de Defeitos**](./BUG-REPORTS.md): Histórico de bugs encontrados e corrigidos.
