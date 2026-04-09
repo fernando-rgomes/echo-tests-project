@@ -1,0 +1,26 @@
+# Dependências do Node (NUNCA envie isso)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Arquivos gerados pelo Cypress durante os testes
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+
+# Arquivos de Sistema
+.DS_Store
+Thumbs.db
+
+# Configurações de IDE (Opcional, mas recomendado)
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# Arquivos de ambiente e segredos 
+.env
+.env.local
