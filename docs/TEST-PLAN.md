@@ -6,8 +6,8 @@ Este documento serve como o guia mestre de qualidade para a plataforma **Echo (O
 ###  Repositórios do Projeto
 Para consultar a implementação dos testes e o código-fonte da aplicação, acesse os links abaixo:
 
-* ⚙️ **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](link-do-seu-repo-backend)
-* 💻 **Repositório Frontend (Cypress E2E & UI):** [Clique aqui para acessar o GitHub](link-do-seu-repo-frontend-ou-cypress)
+* ⚙️ **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-api.git)
+* 💻 **Repositório Base):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-core.git)
 
 ---
 
