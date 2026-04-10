@@ -1,4 +1,4 @@
-## 🐛 Relatório de Defeitos (Bug Reports)
+## 🐞 Relatório de Defeitos 
 
 Esta seção documenta os defeitos encontrados durante o ciclo de desenvolvimento e testes, bem como suas respectivas análises de causa raiz e resoluções.
 
