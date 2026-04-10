@@ -40,7 +40,7 @@ O padrão de qualidade está documentado da seguinte forma:
 | :--- | :--- |
 | [**Plano de Testes**](./docs/TEST-PLAN.md) | Estratégia global, definição de pronto (DoD) e mitigação de riscos. |
 | [**Casos de Teste**](./docs/TEST-CASES.md) | Matriz completa de cenários (API e E2E) e rastreabilidade. |
-| [**Relatório de Defeitos**](./docs/BUG-REPORTS.md) | Histórico de bugs encontrados no ciclo de desenvolvimento e devidamente tratados. |
+| [**Relatório de Defeitos**](./docs/BUG-REPORT.md) | Histórico de bugs encontrados no ciclo de desenvolvimento e devidamente tratados. |
 
 ---
 
