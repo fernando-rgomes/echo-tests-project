@@ -2,8 +2,6 @@
 > **Nota:** Os casos de teste identificados como USER, AUTH, RBAC e REPORT (Integração) são validados via Rest Assured no repositório Echo-api, enquanto os casos E2E são validados via Cypress neste repositório.*
 
 
-*⚙️ **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](link-do-seu-repo-backend)*
-
 **Foco:** Validação de regras de negócio, segurança e persistência no nível do servidor (Spring Boot).
 
 **Ferramenta:** RestAssured
@@ -59,8 +57,6 @@
 <br>
 
 # 🧪 Casos de Teste Automatizados (E2E Frontend)
-
-* 💻 **Repositório Frontend (Cypress E2E & UI):** [Clique aqui para acessar o GitHub](link-do-seu-repo-frontend-ou-cypress)*
 
 **Ferramenta de Automação:** Cypress
 
