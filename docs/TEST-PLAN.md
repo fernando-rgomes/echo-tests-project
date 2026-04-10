@@ -6,15 +6,15 @@ Este documento serve como o guia mestre de qualidade para a plataforma **Echo (O
 ###  Repositórios do Projeto
 Para consultar a implementação dos testes e o código-fonte da aplicação, acesse os links abaixo:
 
-* ⚙️ **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-api.git)
-* 💻 **Repositório Base):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-core.git)
+*  **Repositório Backend (API Spring Boot & Testes de Integração):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-api.git)
+*  **Repositório Base(Thymeleaf e Javalin ):** [Clique aqui para acessar o GitHub](https://github.com/fernando-rgomes/echo-core.git)
 
 ---
 
-### 🎯 1. Objetivo e Política de Qualidade
+###  1. Objetivo e Política de Qualidade
 Garantir a integridade, o anonimato e a segurança do sistema através de uma abordagem de **Pirâmide de Testes**. O foco principal é a proteção de dados sensíveis e a garantia de que as regras de negócio (RBAC) sejam invioláveis, tanto na camada de serviço (API) quanto na jornada do usuário (Web).
 
-## 🧠 2. Escopo e Matriz de Rastreabilidade
+##  2. Escopo e Matriz de Rastreabilidade
 Para garantir que nenhum requisito fique sem cobertura, utilizamos prefixos de identificação que conectam o código ao plano:
 
 * **`USER-XXX`**: Cadastro e Integridade de Usuário (API).
@@ -23,28 +23,28 @@ Para garantir que nenhum requisito fique sem cobertura, utilizamos prefixos de i
 * **`REPORT-XXX`**: Ciclo de vida da denúncia e persistência (API).
 * **`E2E-XXX`**: Jornada visual e comportamento funcional no navegador (Cypress).
 
-## 🛠️ 3. Estratégia de Testes
+##  3. Estratégia de Testes
 
-### 🔸 Camada de Integração (API Backend)
+###  Camada de Integração (API Backend)
 * **Ferramentas:** JUnit 5, Rest Assured, AssertJ.
 * **Foco:** Contratos JSON, Lógica de Negócio, Status Codes e Segurança.
 * **Técnica:** Testes de estado e comportamento, garantindo que a API responda corretamente a entradas válidas e trate exceções de forma segura (sem vazar stacktraces).
 
-### 🛡️ Evidência de Testes de Integração (Backend)
+###  Evidência de Testes de Integração (Backend)
 Abaixo, o log de execução da suíte de segurança, validando o bloqueio de acessos não autorizados e a integridade do RBAC (Role-Based Access Control).
 
 ![Sucesso nos Testes de API](./api-evidence/api-integration-security-success.png)
 
 > **Nota:** Todos os 17 cenários de integração foram validados com 100% de sucesso, cobrindo fluxos de Autenticação, Cadastro e Gestão de Denúncias.
 
-### 🔸 Camada End-to-End (Web Frontend)
+###  Camada End-to-End (Web Frontend)
 * **Ferramentas:** Cypress.
 * **Foco:** Usabilidade, navegação entre rotas, feedback visual (alertas/toasts) e persistência visual dos dados.
 * **Diferencial:** Automação de fluxos complexos, como a captura dinâmica de protocolos para consulta de status.
 
 ---
 
-## 🚀 4. Execução dos Testes (Guia do Avaliador)
+##  4. Execução dos Testes (Guia do Avaliador)
 
 Para reproduzir os resultados de qualidade, utilize os comandos abaixo:
 
@@ -59,14 +59,14 @@ npx cypress open
 # Executa os testes em modo headless (terminal)
 npx cypress run
 ```
-## ✅ 5. Critérios de Aceitação (Definition of Done)
+##  5. Critérios de Aceitação 
 Um caso de teste só é considerado concluído quando:
 1. O código do teste segue os padrões de *Clean Code* e está documentado.
 2. O teste passa de forma consistente em ambiente local (sem *flakiness*).
-3. Qualquer bug identificado durante o teste foi registrado no [Relatório de Defeitos](./BUG-REPORTS.md).
+3. Qualquer bug identificado durante o teste foi registrado no [Relatório de Defeitos](./BUG-REPORT.md).
 4. A cobertura de código atende aos requisitos mínimos de segurança e negócio.
 
-## ⚠️ 6. Riscos, Mitigações e Lições Aprendidas
+##  6. Riscos, Mitigações e Lições Aprendidas
 
 | Risco Identificado | Ação Mitigadora Implementada |
 | :--- | :--- |
@@ -75,6 +75,6 @@ Um caso de teste só é considerado concluído quando:
 | **Sincronia em Testes E2E** | Uso de *Aliases* e *Promises* no Cypress para lidar com a natureza assíncrona da Web. |
 | **Exceções de JS no Front** | Implementação de *Guard Clauses* no JavaScript para evitar quebra de scripts em páginas dinâmicas. |
 
-## 📊 7. Documentação de Suporte
+##  7. Documentação de Suporte
 * [**Casos de Teste Detalhados**](./TEST-CASES.md): Lista completa de cenários e resultados esperados.
-* [**Relatório de Defeitos**](./BUG-REPORTS.md): Histórico de bugs encontrados e corrigidos.
+* [**Relatório de Defeitos**](./BUG-REPORT.md): Histórico de bugs encontrados e corrigidos.
