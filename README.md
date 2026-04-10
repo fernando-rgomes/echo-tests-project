@@ -14,14 +14,14 @@ Optamos por uma estrutura de testes desacoplada para refletir cenários reais de
 
 ---
 
-## 🛡️ Showcase de Automação (Segurança & RBAC)
+## Showcase de Automação (Segurança & RBAC)
 Para o projeto ECHO, a segurança é inegociável. Abaixo, demonstramos a automação validando o acesso exclusivo do perfil `ADMIN` às rotas gerenciais, impedindo o acesso não autorizado de usuários comuns.
 
 ![Automação de Segurança Admin](./docs/screenshots/test_admin_security.gif)
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 ### **Testes de Interface (E2E - Frontend)**
 * **Cypress:** Framework principal para automação de navegadores e fluxos visuais.
@@ -33,8 +33,8 @@ Para o projeto ECHO, a segurança é inegociável. Abaixo, demonstramos a automa
 
 ---
 
-## 📋 Documentação Técnica
-Nossa metodologia não se resume apenas a código. O padrão de qualidade está documentado de ponta a ponta:
+## 📋 Documentação 
+O padrão de qualidade está documentado da seguinte forma:
 
 | Documento | Descrição |
 | :--- | :--- |
@@ -63,17 +63,12 @@ npx cypress open
 
 # OU, para rodar todos os testes ocultos (direto no terminal):
 npx cypress run
-### 2. Testes de API (Backend)
-Para validar os contratos e a segurança na fonte, navegue até a raiz do repositório da API (`echo-api`) e execute:
 
-```bash
-# Executa a suíte ignorando testes de contexto desnecessários
-.\mvnw clean test -Dtest="!EchoApiApplicationTests" -DforkCount=0
 ```
 ### **2. Testes de API (Rest Assured - Backend)**
 A suíte de integração do backend levanta seu próprio contexto de testes na memória, não dependendo da interface visual.
 
-**🖥️ Exploração e Execução via IDE (Recomendado para Avaliação):**
+** Exploração e Execução via IDE (Recomendado para Avaliação):**
 A forma mais simples e visual de analisar a lógica (BDD) e rodar os testes é diretamente pelo **IntelliJ IDEA** (ou sua IDE de preferência):
 
 1. Abra o projeto **`echo-api`** na sua IDE.
@@ -93,7 +88,7 @@ Caso prefira rodar todos os testes da aplicação de uma só vez pelo terminal, 
 
 ---
 
-## 💎 Snippets em Destaque
+## Snippets em Destaque
 
 Nossa automação vai além de cliques simples. Abaixo, exemplos de como resolvemos desafios técnicos de negócio:
 
@@ -129,5 +124,74 @@ void deveBloquearAcessoSemToken() {
         .get("/api/admin/denuncias")
     .then()
         .statusCode(HttpStatus.FORBIDDEN.value());
+}
+```
+### 4. Uso de Factory Method no testes de API
+Com o objetivo de manter o código de teste limpo, escalável e focado nas regras de negócio, a arquitetura dos testes incorpora **Design Patterns**, com destaque para o uso de **Factories** (Fábricas de Dados).
+
+### Por que utilizar Factories nos testes?
+A implementação do padrão *Factory* no projeto centraliza a complexidade de setup (como criação de entidades, autenticação e geração de payloads). Como demonstrado abaixo, isso encurta drasticamente o tamanho dos testes, evita repetição de código (DRY) e permite que o método de teste foque puramente na validação do comportamento da API.
+
+### Exemplo Prático da Implementação:
+
+** Criação das Factories (Encapsulando a complexidade):**
+```java
+public class UserFactory {
+    public static DadosCadastroUsuario criarUsuarioComum() {
+        return new DadosCadastroUsuario(gerarEmailAleatorio(), "SenhaComum123!");
+    }
+}
+
+public class AutenticacaoFactory {
+    public static String obterTokenPara(DadosCadastroUsuario usuarioCadastro) {
+        // Pega o e-mail e a senha limpa direto do DTO gerado pela UserFactory
+        var login = new DadosAutenticacao(usuarioCadastro.email(), usuarioCadastro.password());
+
+        return RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(login)
+                .when()
+                .post("/login")
+                .then()
+                .statusCode(200) // Garante que logou com sucesso
+                .extract().path("token");
+    }
+}
+
+public class ReportFactory {
+    public static DadosCadastroDenuncia criarDenunciaDescricaoCurta() {
+        return new DadosCadastroDenuncia(
+                "Erro",
+                ReportCategory.FRAUDE,
+                "Muito curta" // Vai falhar na validação @Size(min=20)
+        );
+    }
+}
+```
+## Aplicação no Teste (Código limpo e direto ao ponto):
+```java
+@Test
+@DisplayName("[REPORT-003] Deve retornar http 400 e bloquear quando tenta cadastrar denuncia com descrição contendo menos de 20 caracteres")
+void deveRetornar400_QuandoDescricaoForCurta() {
+    
+    // 1. Setup de Login Limpo (Graças às Factories!)
+    var user = UserFactory.criarUsuarioComum();
+    userService.create(user);
+    String token = AutenticacaoFactory.obterTokenPara(user);
+
+    // 2. Execução com erro intencional
+    var corpoRequest = ReportFactory.criarDenunciaDescricaoCurta();
+
+    // 3. Validação Rest Assured
+    given()
+        .header("Authorization", "Bearer " + token)
+        .contentType(ContentType.JSON)
+        .body(corpoRequest)
+    .when()
+        .post("/reports")
+    .then()
+        .statusCode(400); // Bad Request esperado
+        
+    System.out.println("ERRO: A descrição deve ter no mínimo 20 Caracteres.");
 }
 
